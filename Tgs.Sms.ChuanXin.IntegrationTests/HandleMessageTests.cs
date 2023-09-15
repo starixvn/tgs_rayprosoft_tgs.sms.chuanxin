@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
+using System.Text.Json;
 using Google.Protobuf;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -64,7 +65,10 @@ public class HandleMessageTests
         var vendorInfo = new SmsVendorInfo<SmsSettings>(
             "Test",
             new SmsSettings("11111", "22222", "1000"));
-        _ = fakeBrandServiceClient.GetBrandSmsSettingsAsync<SmsSettings>(Arg.Is(brandId), Arg.Any<CancellationToken>())
+        _ = fakeBrandServiceClient.GetBrandSmsSettingsAsync<SmsSettings>(
+            Arg.Is(brandId),
+            Arg.Any<JsonSerializerOptions>(),
+            Arg.Any<CancellationToken>())
             .Returns(vendorInfo);
 
         var tcs = new TaskCompletionSource();
