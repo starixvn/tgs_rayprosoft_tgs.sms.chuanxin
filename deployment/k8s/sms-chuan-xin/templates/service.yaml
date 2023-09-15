@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "sms-chuan-xin.fullname" . }}
+  labels:
+    {{- include "sms-chuan-xin.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "sms-chuan-xin.selectorLabels" . | nindent 4 }}
