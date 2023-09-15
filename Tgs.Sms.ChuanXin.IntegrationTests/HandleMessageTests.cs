@@ -54,7 +54,7 @@ public class HandleMessageTests
 
         var messageSender = web.Services.GetRequiredService<IMessageSender>();
 
-        _ = fakeBrandServiceClient.GetBrandInfoAsync(Arg.Is(brandId))
+        _ = fakeBrandServiceClient.GetBrandInfoAsync(Arg.Is(brandId), Arg.Any<CancellationToken>())
             .Returns(new BrandInfo
             {
                 Id = brandId,
@@ -64,7 +64,7 @@ public class HandleMessageTests
         var vendorInfo = new SmsVendorInfo<SmsSettings>(
             "Test",
             new SmsSettings("11111", "22222", "1000"));
-        _ = fakeBrandServiceClient.GetBrandSmsSettingsAsync<SmsSettings>(Arg.Is(brandId))
+        _ = fakeBrandServiceClient.GetBrandSmsSettingsAsync<SmsSettings>(Arg.Is(brandId), Arg.Any<CancellationToken>())
             .Returns(vendorInfo);
 
         var tcs = new TaskCompletionSource();
