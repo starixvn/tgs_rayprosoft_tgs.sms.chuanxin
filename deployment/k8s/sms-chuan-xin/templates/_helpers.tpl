@@ -48,7 +48,7 @@ Selector labels
 {{- define "sms-chuan-xin.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "sms-chuan-xin.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
-tgs.kind=sms
+tgs.kind: sms
 {{- end }}
 
 {{/*
