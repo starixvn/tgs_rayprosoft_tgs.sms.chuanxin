@@ -5,6 +5,9 @@ metadata:
 data:
   appsettings.json: |
     {
+      "ChuanXin": {
+        "BrandCertificateBaseUrl": "http://brand-cert-api"
+      }
     }
   otel-collector-config.yaml: |
     receivers:

@@ -28,6 +28,8 @@ var builder = WebApplication.CreateBuilder(args);
 		});
 
 	builder.Services
+		.AddBrandCertificateClient((options, _) => options.BrandCertificateBaseUrl =
+			builder.Configuration.GetValue<Uri>("ChuanXin:BrandCertificateBaseUrl")!)
 		.AddChuanXinSms(httpBuilder => httpBuilder
 			.ConfigureHttpClient(httpClient => httpClient.BaseAddress =
 				builder.Configuration.GetValue<Uri>("ChuanXin:ApiBaseUrl")!));
