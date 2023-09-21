@@ -64,6 +64,11 @@ spec:
             - name: http
               containerPort: {{ .Values.service.port }}
               protocol: TCP
+          volumeMounts:
+            - mountPath: /app/appsettings.Production.json
+              name: appsettings
+              readOnly: true
+              subPath: appsettings.json
           livenessProbe:
             httpGet:
               path: /healthz
