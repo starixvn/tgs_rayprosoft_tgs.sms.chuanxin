@@ -71,6 +71,7 @@ var builder = WebApplication.CreateBuilder(args);
 				.AddEnvironmentVariableDetector())
 			.AddSource("Tgs.*")
 			.AddSource("TGS.*")
+			.AddSource("Valhalla.*")
 			.AddAspNetCoreInstrumentation()
 			.AddProfileViewExporter()
 			.AddOtlpExporter())
