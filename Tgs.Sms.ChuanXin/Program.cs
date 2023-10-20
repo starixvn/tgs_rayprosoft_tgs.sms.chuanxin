@@ -3,6 +3,7 @@ using OpenTelemetry.Instrumentation.AspNetCore;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
+using Tgs.Sms.ChuanXin;
 using Tgs.Sms.ChuanXin.DependencyInjection;
 using Tgs.Sms.ChuanXin.MessageQueue;
 
@@ -28,11 +29,13 @@ var builder = WebApplication.CreateBuilder(args);
 		});
 
 	builder.Services
+		.AddHttpClientLoggingHandler()
 		.AddBrandServiceClient((options, _) => options.BrandCertificateBaseUrl =
 			builder.Configuration.GetValue<Uri>("ChuanXin:BrandCertificateBaseUrl")!)
 		.AddChuanXinSms(httpBuilder => httpBuilder
 			.ConfigureHttpClient(httpClient => httpClient.BaseAddress =
-				builder.Configuration.GetValue<Uri>("ChuanXin:ApiBaseUrl")!));
+				builder.Configuration.GetValue<Uri>("ChuanXin:ApiBaseUrl")!)
+			.AddLoggingHandler<SmsSettings>());
 
 	builder.Services
 		.AddMessageQueue()
