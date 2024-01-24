@@ -64,6 +64,6 @@ public class ChuanXinReceiveHandlerTests
                     "ee6ae3ebeaf24f17b27a8fb5402de3b1")));
 
         // Act
-        await sut.HandleAsync(request.ToByteArray());
+        await sut.HandleAsync("test", request.ToByteArray(), null);
     }
 }
