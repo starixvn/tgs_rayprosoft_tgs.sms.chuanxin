@@ -3,15 +3,8 @@ using Microsoft.AspNetCore.Http;
 
 namespace Tgs.Sms.ChuanXin;
 
-internal class ChuanXinApi
+internal class ChuanXinApi(HttpClient httpClient)
 {
-	private readonly HttpClient _httpClient;
-
-	public ChuanXinApi(HttpClient httpClient)
-	{
-		_httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
-	}
-
 	public async ValueTask SendMessageAsync(
 		string appKey,
 		string appCode,
@@ -24,10 +17,10 @@ internal class ChuanXinApi
 			.Add("appkey", appKey)
 			.Add("appcode", appCode)
 			.Add("appsecret", appSecret)
-			.Add("phone", phone.TrimStart('+'))
+			.Add("phone", phone.TrimStart('+').TrimStart('0'))
 			.Add("msg", message);
 
-		var response = await _httpClient.PostAsync($"/sms/batch/v2{query.ToUriComponent()}", null, cancellationToken)
+		var response = await httpClient.PostAsync($"/sms/batch/v2{query.ToUriComponent()}", null, cancellationToken)
 			.ToAsyncEnumerable()
 			.Do(response => response.EnsureSuccessStatusCode())
 			.SelectMany(response => response.Content

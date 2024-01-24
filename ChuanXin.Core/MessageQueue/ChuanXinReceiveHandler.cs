@@ -5,23 +5,21 @@ using Valhalla.MessageQueue;
 
 namespace Tgs.Sms.ChuanXin.MessageQueue;
 
-internal class ChuanXinReceiveHandler : IMessageHandler
+internal class ChuanXinReceiveHandler(
+	IBrandServiceClient brandServiceClient,
+	ChuanXinApi chuanXinApi,
+	ILogger<ChuanXinReceiveHandler> logger)
+	: IMessageHandler<ReadOnlyMemory<byte>>
 {
-	private readonly IBrandServiceClient _brandServiceClient;
-	private readonly ChuanXinApi _chuanXinApi;
-	private readonly ILogger<ChuanXinReceiveHandler> _logger;
+	private readonly IBrandServiceClient _brandServiceClient = brandServiceClient ?? throw new ArgumentNullException(nameof(brandServiceClient));
+	private readonly ChuanXinApi _chuanXinApi = chuanXinApi ?? throw new ArgumentNullException(nameof(chuanXinApi));
+	private readonly ILogger<ChuanXinReceiveHandler> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
-	public ChuanXinReceiveHandler(
-		IBrandServiceClient brandServiceClient,
-		ChuanXinApi chuanXinApi,
-		ILogger<ChuanXinReceiveHandler> logger)
-	{
-		_brandServiceClient = brandServiceClient ?? throw new ArgumentNullException(nameof(brandServiceClient));
-		_chuanXinApi = chuanXinApi ?? throw new ArgumentNullException(nameof(chuanXinApi));
-		_logger = logger ?? throw new ArgumentNullException(nameof(logger));
-	}
-
-	public async ValueTask HandleAsync(ReadOnlyMemory<byte> data, CancellationToken cancellationToken = default)
+	public async ValueTask HandleAsync(
+		string subject,
+		ReadOnlyMemory<byte> data,
+		IEnumerable<MessageHeaderValue>? headerValues,
+		CancellationToken cancellationToken = default)
 	{
 		var shortMsg = ShortMessage.Parser.ParseFrom(data.Span);
 		var brandId = shortMsg.BrandId.ToGuid();
@@ -37,7 +35,7 @@ internal class ChuanXinReceiveHandler : IMessageHandler
 			nameof(shortMsg.Content),
 			shortMsg.Content);
 
-		var brandInfo = await _brandServiceClient.GetBrandInfoAsync(
+		var brandInfo = await brandServiceClient.GetBrandInfoAsync(
 			brandId: brandId,
 			cancellationToken).ConfigureAwait(false);
 
