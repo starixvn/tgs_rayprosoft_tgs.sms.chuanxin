@@ -78,7 +78,7 @@ public class HandleMessageTests
                 ["appkey"] = vendorInfo.SmsSettings.AppKey,
                 ["appcode"] = vendorInfo.SmsSettings.AppCode,
                 ["appsecret"] = vendorInfo.SmsSettings.AppSecret,
-                ["phone"] = request.Destination.TrimStart('+').TrimStart('0'),
+                ["phone"] = request.Destination.TrimStart('+'),
                 ["msg"] = request.Content
             })
             .Respond(
@@ -94,7 +94,7 @@ public class HandleMessageTests
                 });
 
         // Act
-        await messageSender.PublishAsync("tgs.sms.chuan-xin", request.ToByteArray());
+        await messageSender.PublishAsync<ReadOnlyMemory<byte>>("tgs.sms.chuan-xin", request.ToByteArray());
         await tcs.Task.WaitAsync(TimeSpan.FromSeconds(1D));
     }
 }

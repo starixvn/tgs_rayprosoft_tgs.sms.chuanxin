@@ -5,7 +5,7 @@ using Valhalla.MessageQueue;
 
 namespace Tgs.Sms.ChuanXin.MessageQueue;
 
-internal class ChuanXinReceiveHandler : IMessageHandler
+internal class ChuanXinReceiveHandler : IMessageHandler<ReadOnlyMemory<byte>>
 {
 	private readonly IBrandServiceClient _brandServiceClient;
 	private readonly ChuanXinApi _chuanXinApi;
@@ -21,7 +21,7 @@ internal class ChuanXinReceiveHandler : IMessageHandler
 		_logger = logger ?? throw new ArgumentNullException(nameof(logger));
 	}
 
-	public async ValueTask HandleAsync(ReadOnlyMemory<byte> data, CancellationToken cancellationToken = default)
+	public async ValueTask HandleAsync(string subject, ReadOnlyMemory<byte> data, IEnumerable<MessageHeaderValue>? headerValues, CancellationToken cancellationToken = default)
 	{
 		var shortMsg = ShortMessage.Parser.ParseFrom(data.Span);
 		var brandId = shortMsg.BrandId.ToGuid();
