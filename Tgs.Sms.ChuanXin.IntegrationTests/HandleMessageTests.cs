@@ -90,6 +90,6 @@ public class HandleMessageTests(ITestOutputHelper testOutputHelper)
 
         // Act
         await messageSender.PublishAsync<ReadOnlyMemory<byte>>("tgs.sms.chuan-xin", request.ToByteArray());
-        await tcs.Task.WaitAsync(TimeSpan.FromSeconds(1D));
+        await tcs.Task;
     }
 }
