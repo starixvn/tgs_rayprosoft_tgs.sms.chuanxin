@@ -15,14 +15,9 @@ using Xunit.Abstractions;
 
 namespace Tgs.Sms.ChuanXin.IntegrationTests;
 
-public class HandleMessageTests
+public class HandleMessageTests(ITestOutputHelper testOutputHelper)
 {
-    private readonly ITestOutputHelper _testOutputHelper;
-
-    public HandleMessageTests(ITestOutputHelper testOutputHelper)
-    {
-        _testOutputHelper = testOutputHelper ?? throw new ArgumentNullException(nameof(testOutputHelper));
-    }
+    private readonly ITestOutputHelper _testOutputHelper = testOutputHelper ?? throw new ArgumentNullException(nameof(testOutputHelper));
 
     [Fact]
     public async Task 處理傳送簡訊要求()
@@ -33,7 +28,7 @@ public class HandleMessageTests
 
         await using var web = ChuanXinTestHost.Instance
             .WithWebHostBuilder(hostBuilder => hostBuilder
-                .ConfigureLogging(logging => logging.AddXUnit(_testOutputHelper))
+                .ConfigureLogging(logging => logging.AddXUnit(testOutputHelper))
                 .ConfigureServices(services => services
                     .AddSingleton(fakeBrandServiceClient)
                     .AddMessageQueue()
