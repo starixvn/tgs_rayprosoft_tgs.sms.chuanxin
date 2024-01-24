@@ -78,7 +78,7 @@ public class HandleMessageTests
                 ["appkey"] = vendorInfo.SmsSettings.AppKey,
                 ["appcode"] = vendorInfo.SmsSettings.AppCode,
                 ["appsecret"] = vendorInfo.SmsSettings.AppSecret,
-                ["phone"] = request.Destination.Trim('+'),
+                ["phone"] = request.Destination.TrimStart('+').TrimStart('0'),
                 ["msg"] = request.Content
             })
             .Respond(
