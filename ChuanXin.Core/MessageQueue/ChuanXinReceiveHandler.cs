@@ -8,13 +8,18 @@ namespace Tgs.Sms.ChuanXin.MessageQueue;
 internal class ChuanXinReceiveHandler(
 	IBrandServiceClient brandServiceClient,
 	ChuanXinApi chuanXinApi,
-	ILogger<ChuanXinReceiveHandler> logger) : IMessageHandler<ReadOnlyMemory<byte>>
+	ILogger<ChuanXinReceiveHandler> logger)
+	: IMessageHandler<ReadOnlyMemory<byte>>
 {
 	private readonly IBrandServiceClient _brandServiceClient = brandServiceClient ?? throw new ArgumentNullException(nameof(brandServiceClient));
 	private readonly ChuanXinApi _chuanXinApi = chuanXinApi ?? throw new ArgumentNullException(nameof(chuanXinApi));
 	private readonly ILogger<ChuanXinReceiveHandler> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
-	public async ValueTask HandleAsync(string subject, ReadOnlyMemory<byte> data, IEnumerable<MessageHeaderValue>? headerValues, CancellationToken cancellationToken = default)
+	public async ValueTask HandleAsync(
+		string subject,
+		ReadOnlyMemory<byte> data,
+		IEnumerable<MessageHeaderValue>? headerValues,
+		CancellationToken cancellationToken = default)
 	{
 		var shortMsg = ShortMessage.Parser.ParseFrom(data.Span);
 		var brandId = shortMsg.BrandId.ToGuid();
