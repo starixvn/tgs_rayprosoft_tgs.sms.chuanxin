@@ -17,7 +17,7 @@ internal class ChuanXinApi(HttpClient httpClient)
 			.Add("appkey", appKey)
 			.Add("appcode", appCode)
 			.Add("appsecret", appSecret)
-			.Add("phone", phone.TrimStart('+').TrimStart('0'))
+			.Add("phone", phone.TrimStart('+'))
 			.Add("msg", message);
 
 		var response = await httpClient.PostAsync($"/sms/batch/v2{query.ToUriComponent()}", null, cancellationToken)

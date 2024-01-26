@@ -17,7 +17,7 @@ namespace Tgs.Sms.ChuanXin.IntegrationTests;
 
 public class HandleMessageTests(ITestOutputHelper testOutputHelper)
 {
-    [Fact(Timeout = 1000)]
+    [Fact(Timeout = 3000)]
     public async Task 處理傳送簡訊要求()
     {
         // Arrange
@@ -43,7 +43,9 @@ public class HandleMessageTests(ITestOutputHelper testOutputHelper)
         {
             BrandId = brandId,
             Content = "test123",
-            Destination = "+15100000044"
+            Destination = "+15100000044",
+            AreaCode = "+151",
+            Phone = "00000044"
         };
 
         var messageSender = web.Services.GetRequiredService<IMessageSender>();
@@ -71,7 +73,7 @@ public class HandleMessageTests(ITestOutputHelper testOutputHelper)
                 ["appkey"] = vendorInfo.SmsSettings.AppKey,
                 ["appcode"] = vendorInfo.SmsSettings.AppCode,
                 ["appsecret"] = vendorInfo.SmsSettings.AppSecret,
-                ["phone"] = request.Destination.TrimStart('+').TrimStart('0'),
+                ["phone"] = "15144",
                 ["msg"] = request.Content
             })
             .Respond(

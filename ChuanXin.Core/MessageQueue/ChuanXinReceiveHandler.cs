@@ -35,7 +35,7 @@ internal class ChuanXinReceiveHandler(
 			nameof(shortMsg.Content),
 			shortMsg.Content);
 
-		var brandInfo = await brandServiceClient.GetBrandInfoAsync(
+		var brandInfo = await _brandServiceClient.GetBrandInfoAsync(
 			brandId: brandId,
 			cancellationToken).ConfigureAwait(false);
 
@@ -68,7 +68,7 @@ internal class ChuanXinReceiveHandler(
 			smsInfo.SmsSettings.AppKey,
 			smsInfo.SmsSettings.AppCode,
 			smsInfo.SmsSettings.AppSecret,
-			shortMsg.Destination,
+			$"{shortMsg.AreaCode}{shortMsg.Phone.TrimStart('0')}",
 			shortMsg.Content,
 			cancellationToken).ConfigureAwait(false);
 	}

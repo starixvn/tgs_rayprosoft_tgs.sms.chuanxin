@@ -31,7 +31,9 @@ public class ChuanXinReceiveHandlerTests
         {
             BrandId = brandId,
             Content = "test123",
-            Destination = "+15100000044"
+            Destination = "+15100000044",
+            AreaCode = "+151",
+            Phone = "00000044"
         };
 
         _ = fakeBrandServiceClient.GetBrandInfoAsync(Arg.Is(brandId))
@@ -53,7 +55,7 @@ public class ChuanXinReceiveHandlerTests
                 ["appkey"] = vendorInfo.SmsSettings.AppKey,
                 ["appcode"] = vendorInfo.SmsSettings.AppCode,
                 ["appsecret"] = vendorInfo.SmsSettings.AppSecret,
-                ["phone"] = request.Destination.Trim('+'),
+                ["phone"] = "15144",
                 ["msg"] = request.Content
             })
             .Respond(
