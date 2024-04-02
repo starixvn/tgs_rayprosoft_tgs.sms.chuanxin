@@ -64,12 +64,19 @@ internal class ChuanXinReceiveHandler(
 			return;
 		}
 
-		await _chuanXinApi.SendMessageAsync(
-			smsInfo.SmsSettings.AppKey,
-			smsInfo.SmsSettings.AppCode,
-			smsInfo.SmsSettings.AppSecret,
-			$"{shortMsg.AreaCode}{shortMsg.Phone.TrimStart('0')}",
-			shortMsg.Content,
-			cancellationToken).ConfigureAwait(false);
+		try
+		{
+			await _chuanXinApi.SendMessageAsync(
+				smsInfo.SmsSettings.AppKey,
+				smsInfo.SmsSettings.AppCode,
+				smsInfo.SmsSettings.AppSecret,
+				$"{shortMsg.AreaCode}{shortMsg.Phone.TrimStart('0')}",
+				shortMsg.Content,
+				cancellationToken).ConfigureAwait(false);
+		}
+		catch (Exception ex)
+		{
+			_logger.LogError("ChuanXin SendMessage Failed, Message:{0}", ex.Message);
+		}
 	}
 }
